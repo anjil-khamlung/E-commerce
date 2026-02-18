@@ -1,10 +1,9 @@
-import React from 'react'
-import {Link, NavLink} from 'react-router-dom'
-
+import React from "react";
+import { Link, NavLink } from "react-router-dom";
 
 const Navbar = () => {
   return (
-    <nav>
+    <nav className="bg-white shadow-lg sticky top-0 ">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -33,6 +32,6 @@ const Navbar = () => {
       </div>
     </nav>
   );
-}
+};
 
-export default Navbar
+export default Navbar;

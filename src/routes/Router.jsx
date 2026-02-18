@@ -8,7 +8,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <AppLayout />,
-    errorElement: <ErrorPage />,
+   errorElement:<ErrorPage/>,
     children: [
       {
         index: true,
@@ -22,11 +22,7 @@ const router = createBrowserRouter([
         path: "products",
         element: <Products />,
       },
-      // This will catch any undefined routes
-      {
-        path: "*",
-        element: <div>404 - Page Not Found</div>,
-      },
+    
     ],
   },
 ]);

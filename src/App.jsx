@@ -4,7 +4,7 @@ import router from './routes/Router'
 
 const App = () => {
   return (
-    <div>
+    <div className='min-h-screen bg-gray-50'>
       <RouterProvider router={router}/>
     </div>
   )
