@@ -28,6 +28,22 @@ const Navbar = () => {
               </li>
             ))}
           </ul>
+
+          {/* Desktop buttons */}
+          <div className="hidden md:flex gap-2">
+            <NavLink
+              to="/login"
+              className="bg-blue-400 text-white px-3 py-1 rounded-md w-20 text-center"
+            >
+              Login
+            </NavLink>
+            <NavLink
+              to="/register"
+              className="bg-blue-400 text-white px-3 py-1 rounded-md w-20 text-center"
+            >
+              Register
+            </NavLink>
+          </div>
         </div>
       </div>
     </nav>
