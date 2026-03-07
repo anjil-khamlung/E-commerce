@@ -3,12 +3,13 @@ import AppLayout from "../components/AppLayout";
 import ErrorPage from "../pages/ErrorPage";
 import Home from "../pages/Home";
 import Products from "../pages/Products";
+import Login from "../pages/Login";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <AppLayout />,
-   errorElement:<ErrorPage/>,
+    errorElement: <ErrorPage />,
     children: [
       {
         index: true,
@@ -22,8 +23,11 @@ const router = createBrowserRouter([
         path: "products",
         element: <Products />,
       },
-    
     ],
+  },
+  {
+    path: "login",
+    element: <Login />,
   },
 ]);
 
