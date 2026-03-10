@@ -1,53 +1,77 @@
-import { useState } from "react";
-import axios from "axios";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function Login() {
-  const [form, setForm] = useState({ email: "", password: "" });
+const Login = () => {
   const navigate = useNavigate();
+  const init = {
+    username: "",
+    password: "",
+  };
+  const [formData, setFormData] = useState(init);
+
+  const handleChange = (e) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (formData.username.trim() === "") {
+      alert("username must be filled");
+      return;
+    }
+
+    if (formData.password.length < 5) {
+      alert("password should contain at least 5 character");
+      return;
+    }
+
     try {
-      const res = await axios.post(
-        "http://localhost:5000/api/user/login",
-        form,
-      );
-      localStorage.setItem("token", res.data.token);
-      alert("Login Successful");
-      navigate("/profile");
+      const res = await login(formData);
+      console.log(res);
+      navigate("/");
+      toast.success("Login successfull");
+      console.log(formData);
+      setFormData(init);
     } catch (err) {
-      alert("Invalid Credentials");
+      console.log(err);
+      toast.error("Login failed");
     }
   };
 
   return (
-    <div className="flex justify-center mt-10">
+    <div className="h-screen grid place-items-center ">
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-8 shadow-md rounded w-80"
+        className="flex flex-col gap-4 shadow-2xl w-100 p-6 rounded-2xl"
       >
-        <h2 className="text-2xl font-bold mb-4 text-center">Login</h2>
+        <h1 className="text-4xl text-center font-bold">Login</h1>
         <input
-          type="email"
-          placeholder="Email"
-          value={form.email}
-          onChange={(e) => setForm({ ...form, email: e.target.value })}
-          className="border p-2 w-full mb-3"
+          onChange={handleChange}
+          className="p-2 w-full border-2 rounded-md"
+          type="text"
+          placeholder="enter username"
+          name="username"
+          value={formData.username}
           required
         />
         <input
+          onChange={handleChange}
+          className="p-2 w-full border-2 rounded-md"
           type="password"
-          placeholder="Password"
-          value={form.password}
-          onChange={(e) => setForm({ ...form, password: e.target.value })}
-          className="border p-2 w-full mb-3"
+          placeholder="enter password"
+          name="password"
+          value={formData.password}
           required
         />
-        <button className="bg-blue-600 text-white py-2 w-full rounded hover:bg-blue-700">
-          Login
-        </button>
+        <input
+          className="bg-blue-500 p-2 rounded-md font-bold text-white cursor-pointer"
+          type="submit"
+          value="submit"
+        />
       </form>
     </div>
   );
-}
+};
+
+export default Login;
