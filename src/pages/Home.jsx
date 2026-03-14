@@ -16,7 +16,7 @@ const Home = () => {
               exclusive deals!
             </p>
             <Link
-              to="/products"
+              to="/login"
               className="inline-block bg-white text-blue-500 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
             >
               Shop Now
