@@ -1,14 +1,14 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
+import logo from "../assets/logo.png"
 
 const Navbar = () => {
   return (
     <nav className="bg-white shadow-lg sticky top-0 ">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <span className="text-2xl font-bold text-blue-500">E-Shop</span>
+          <Link to="/" >
+            <img className="h-16" src={logo} alt="My Logo"  />
           </Link>
 
           {/* Desktop Navigation */}
