@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 const Register = () => {
   const navigate = useNavigate();
   const init = {
-    name: "",
+    
     email: "",
     password: "",
   };
@@ -42,18 +42,7 @@ const Register = () => {
       >
         <h1 className="font-bold text-4xl text-center">Register</h1>
 
-        <div className="flex flex-col gap-1">
-          <label className="text-2xl">Username</label>
-          <input
-            onChange={handleChange}
-            type="text"
-            placeholder="enter name"
-            name="name"
-            className="border-2 rounded w-full p-2"
-            value={formData.name}
-            required
-          />
-        </div>
+      
 
         <div className="flex flex-col gap-1">
           <label className="text-2xl">Email</label>

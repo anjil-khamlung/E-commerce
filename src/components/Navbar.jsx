@@ -33,13 +33,13 @@ const Navbar = () => {
           <div className="hidden md:flex gap-2">
             <NavLink
               to="/login"
-              className="bg-blue-400 text-white px-3 py-1 rounded-md w-20 h-10 text-center"
+              className="bg-blue-400  text-white px-3 py-1 rounded-md w-20 h-9 text-center"
             >
               Login
             </NavLink>
             <NavLink
               to="/register"
-              className="bg-blue-400 text-white px-3 py-1 rounded-md w-20 h-10 text-center"
+              className="bg-blue-400 text-white px-3 py-1 rounded-md w-20 h-9 text-center"
             >
               Register
             </NavLink>
