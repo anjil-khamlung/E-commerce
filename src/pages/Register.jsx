@@ -1,79 +1,153 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 const Register = () => {
   const navigate = useNavigate();
-  const init = {
-    
+
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  
+
+  const [formData, setFormData] = useState({
     email: "",
     password: "",
-  };
-  const [formData, setFormData] = useState(init);
+    confirmPassword: "",
+  });
+
+  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const validate = () => {
+    let newErrors = {};
+    //Email validation
+    if (!formData.email) {
+      newErrors.email = "Email is required";
+    } else if (!formData.email.includes("@")) {
+      newErrors.email = "Enter a valid email";
+    }
+
+    //Password validdation
+   if (!formData.password) {
+     newErrors.password = "Password is required";
+   } else if (formData.password.length < 8) {
+     newErrors.password = "Password must be at least 8 characters";
+   } else if (!/[A-Z]/.test(formData.password)) {
+     newErrors.password = "Password must contain at least one uppercase letter";
+   } else if (!/\d/.test(formData.password)) {
+     newErrors.password = "Password must contain at least one number";
+   } else if (!/[@$!%*?&]/.test(formData.password)) {
+     newErrors.password =
+       "Password must contain at least one special character";
+   }
+
+    //confirm password
+    if (!formData.confirmPassword) {
+      newErrors.confirmPassword = "Confirm your password";
+    } else if (formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0; //checks if there are any errors and returns true (form is valid) or false (form has errors)
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (formData.name.trim() === "") {
-      alert("name must be filled");
-      return;
-    }
-    if (formData.email.trim() === "") {
-      alert("email must be filled");
-      return;
-    }
+    if (!validate()) return;
 
-    if (formData.password.length < 7) {
-      alert("password should contain at least 8 character");
-      return;
-    }
-    console.log(formData); //api call
-    setFormData(init);
-    navigate("/");
+    console.log("user data:", formData);
+
+    //Api call
+
+    setFormData({
+      email: "",
+      password: "",
+      confirmPassword: "",
+    });
+
+    navigate("/login");
   };
+
   return (
-    <div className="h-screen grid place-items-center ">
+    <div className="h-screen flex items-center justify-center bg-gray-100">
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col gap-4 w-100 p-6 shadow-2xl  rounded-2xl"
+        className="bg-white p-8 rounded-2xl shadow-xl w-96 flex flex-col gap-4"
       >
-        <h1 className="font-bold text-4xl text-center">Register</h1>
+        <h1 className="text-3xl font-bold text-center">Register</h1>
 
-      
-
-        <div className="flex flex-col gap-1">
-          <label className="text-2xl">Email</label>
+        {/*email*/}
+        <div>
+          <label className="font-semibold">Email</label>
           <input
-            onChange={handleChange}
-            value={formData.email}
-            placeholder="enter email"
+            type="email"
             name="email"
-            className="border-2 rounded w-full p-2"
-            required
+            value={formData.email}
+            onChange={handleChange}
+            className="w-full border p-2 rounded mt-1"
+            placeholder="Example: abe@gmail.com"
           />
+          {errors.email && (
+            <p className="text-red-500 text-sm">{errors.email}</p>
+          )}
         </div>
 
-        <div className="flex flex-col gap-1">
-          <label className="text-2xl">Password</label>
+        {/*password*/}
+        <div className="relative">
+          <label className="font-semibold">Password</label>
           <input
-            onChange={handleChange}
-            value={formData.password}
-            type="password"
-            placeholder="enter password"
+            type={showPassword ? "text" : "password"}
             name="password"
-            className="border-2 rounded w-full p-2"
-            required
+            value={formData.password}
+            onChange={handleChange}
+            className="w-full border p-2 rounded mt-1"
+            placeholder="Example: abc123"
           />
+          <span
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-3 top-9 cursor-pointer"
+          >
+            {showPassword ? "🙈" : "🐵"}
+          </span>
+          {errors.password && (
+            <p className="text-red-500 text-sm">{errors.password}</p>
+          )}
+        </div>
+
+        {/*confirmPassword*/}
+
+        <div className="relative">
+          <label className="font-semibold">confirmPassword</label>
+          <input
+            type={showConfirmPassword ? "text" : "password"}
+            name="confirmPassword"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            className="w-full border p-2 rounded mt-1"
+            placeholder="Example: abc123"
+          />
+          <span
+            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            className="absolute right-3 top-9 cursor-pointer"
+          >
+            {showConfirmPassword ? "🙈" : "🐵"}
+          </span>
+          {errors.confirmPassword && (
+            <p className="text-red-500 text-sm">{errors.confirmPassword}</p>
+          )}
         </div>
 
         <button
-          className="bg-blue-500 p-2 rounded-md font-bold text-white cursor-pointer"
+          className="bg-blue-500  text-white py-2 rounded font-bold hover:bg-blue-600 transition cursor-pointer"
           type="submit"
         >
-          Submit
+          Register
         </button>
       </form>
     </div>

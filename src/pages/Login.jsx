@@ -1,77 +1,113 @@
-import React, { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
-  const navigate = useNavigate();
-  const init = {
-    username: "",
-    password: "",
-  };
-  const [formData, setFormData] = useState(init);
+  const navigate = useNavigate()
+  const [errors, setErrors] = useState({})
+  const [showPassword,setShowPassword]=useState(false)
+  const [formData, setFormData] = useState({
+    email: '',
+    password:'',
+  })
 
   const handleChange = (e) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
+    setFormData((prev) => ({
+      ...prev,[e.target.name]:e.target.value,
+    }))
+  }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const validate = () => {
+    const newErrors={}
 
-    if (formData.username.trim() === "") {
-      alert("username must be filled");
-      return;
+    //email validation
+    if (!formData.email) {
+      newErrors.email="Email is required"
+    } else if (!formData.email.includes("@")) {
+      newErrors.email="Enter valid email"
     }
 
-    if (formData.password.length < 5) {
-      alert("password should contain at least 5 character");
-      return;
-    }
+    //password validation
+   if (!formData.password) {
+     newErrors.password = "Password is required";
+   } else if (formData.password.length < 8) {
+     newErrors.password = "Password must be at least 8 characters";
+   } else if (!/[A-Z]/.test(formData.password)) {
+     newErrors.password = "Password must contain at least one uppercase letter";
+   } else if (!/\d/.test(formData.password)) {
+     newErrors.password = "Password must contain at least one number";
+   } else if (!/[@$!%*?&]/.test(formData.password)) {
+     newErrors.password =
+       "Password must contain at least one special character";
+   }
 
-    try {
-      const res = await login(formData);
-      console.log(res);
-      navigate("/");
-      toast.success("Login successfull");
-      console.log(formData);
-      setFormData(init);
-    } catch (err) {
-      console.log(err);
-      toast.error("Login failed");
-    }
-  };
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
 
+  const handleSubmit = (e) => {
+    e.preventDefault()
+
+    if (!validate()) return
+    
+    //api call
+
+    setFormData({
+      email: '',
+      password:'',
+    })
+
+    navigate("/")
+  }
   return (
-    <div className="h-screen grid place-items-center ">
+    <div className=" h-screen flex items-center justify-center bg-gray-100">
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col gap-4 shadow-2xl w-100 p-6 rounded-2xl"
+        className="bg-white p-8 rounded-xl w-96 flex flex-col gap-4"
       >
-        <h1 className="text-4xl text-center font-bold">Login</h1>
-        <input
-          onChange={handleChange}
-          className="p-2 w-full border-2 rounded-md"
-          type="text"
-          placeholder="enter username"
-          name="username"
-          value={formData.username}
-          required
-        />
-        <input
-          onChange={handleChange}
-          className="p-2 w-full border-2 rounded-md"
-          type="password"
-          placeholder="enter password"
-          name="password"
-          value={formData.password}
-          required
-        />
-        <input
-          className="bg-blue-500 p-2 rounded-md font-bold text-white cursor-pointer"
+        <h1 className="text-3xl font-bold text-center">Login</h1>
+
+        {/*email*/}
+        <div >
+          <label className="font-semibold">Email</label>
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            className="w-full border p-2 rounded mt-1"
+            placeholder="Example: abc@gmail.com"
+          />
+          {errors.email && (
+            <p className="text-red-500 text-sm">{errors.email}</p>
+          )}
+        </div>
+
+        {/*password*/}
+        <div className="relative">
+          <label className="font-semibold">Password</label>
+          <input
+            type={showPassword?"text":"password"}
+            name="password"
+            onChange={handleChange}
+            value={formData.password}
+            className="w-full border rounded p-2 mt-1"
+            placeholder="Example: abc134"
+          />
+          <span onClick={()=>setShowPassword(!showPassword)} className='absolute right-3 top-9 cursor-pointer'>{showPassword ? "🙈" : "🐵"}</span>
+          {errors.password && (
+            <p className="text-red-500 text-sm">{errors.password}</p>
+          )}
+        </div>
+
+        <button
           type="submit"
-          value="submit"
-        />
+          className="bg-blue-500 text-center text-white rounded font-bold p-2 hover:bg-blue-600 transition cursor-pointer"
+        >
+          Login
+        </button>
       </form>
     </div>
   );
-};
+}
 
-export default Login;
+export default Login
