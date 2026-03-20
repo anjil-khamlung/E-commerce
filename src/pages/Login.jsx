@@ -91,7 +91,7 @@ const Login = () => {
             onChange={handleChange}
             value={formData.password}
             className="w-full border rounded p-2 mt-1"
-            placeholder="Example: abc134"
+            placeholder="Example: abc@134DE"
           />
           <span onClick={()=>setShowPassword(!showPassword)} className='absolute right-3 top-9 cursor-pointer'>{showPassword ? "🙈" : "🐵"}</span>
           {errors.password && (

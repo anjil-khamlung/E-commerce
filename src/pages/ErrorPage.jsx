@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { FaExclamationTriangle } from "react-icons/fa";
+import SmallGrid from "../components/SmallGrid";
 
 const ErrorPage = () => {
   return (
@@ -18,6 +19,7 @@ const ErrorPage = () => {
       >
         Go Back Home
       </Link>
+
     </div>
   );
 };

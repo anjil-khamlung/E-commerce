@@ -1,29 +1,60 @@
-import React from "react";
-import { Link } from "react-router-dom";
-
+import React, { useState } from "react";
+import laptop from "../assets/laptop.png";
+import fragnance from "../assets/fragnance.png";
+import CategorySection from "../components/CategorySection";
 
 const Home = () => {
+  const images = [laptop, fragnance];
+
+  const [current, setCurrent] = useState(0);
+
+  const prevSlide = () => {
+    setCurrent((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+  };
+
+  const nextSlide = () => {
+    setCurrent((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+  };
+
   return (
-    <div className="container mx-auto px-4 py-8">
-      <section className="mb-12">
-        <div className="bg-linear-to-r from-blue-500 to-blue-300 rounded-2xl p-8 md:p-12 text-white">
-          <div className="max-w-2xl">
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-              Welcome to E-Shop
-            </h1>
-            <p className="text-lg md:text-xl mb-6 opacity-90">
-              Discover amazing products at unbeatable prices. Shop now and enjoy
-              exclusive deals!
-            </p>
-            <Link
-              to="/login"
-              className="inline-block bg-white text-blue-500 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
-            >
-              Shop Now
-            </Link>
-          </div>
-        </div>
-      </section>
+    <div className="relative px-3 ">
+      {/* Image */}
+      <img
+        src={images[current]}
+        alt="slider"
+        className="h-[calc(100vh-4rem)] w-full object-cover "
+      />
+
+      <div
+        className="absolute inset-0 bg-linear-to-b 
+  from-transparent 
+  via-transparent 
+  via-50% 
+  to-white"
+      ></div>
+
+      {/* Overlay */}
+      <div className="absolute top-1/2 left-10   ">
+        <CategorySection />
+      </div>
+
+      {/* Left Button */}
+      <button
+        onClick={prevSlide}
+        className="absolute left-5 top-1/5 transform -translate-y-1/2 
+        bg-white/50 hover:bg-white text-black p-3 rounded-full"
+      >
+        ❮
+      </button>
+
+      {/* Right Button */}
+      <button
+        onClick={nextSlide}
+        className="absolute right-5 top-1/5 transform -translate-y-1/2 
+        bg-white/50 hover:bg-white text-black p-3 rounded-full"
+      >
+        ❯
+      </button>
     </div>
   );
 };

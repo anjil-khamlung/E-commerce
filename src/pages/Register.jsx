@@ -107,7 +107,7 @@ const Register = () => {
             value={formData.password}
             onChange={handleChange}
             className="w-full border p-2 rounded mt-1"
-            placeholder="Example: abc123"
+            placeholder="Example: abc@134DE"
           />
           <span
             onClick={() => setShowPassword(!showPassword)}
@@ -130,7 +130,7 @@ const Register = () => {
             value={formData.confirmPassword}
             onChange={handleChange}
             className="w-full border p-2 rounded mt-1"
-            placeholder="Example: abc123"
+            placeholder="Example: abc@134DE"
           />
           <span
             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
