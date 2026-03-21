@@ -3,23 +3,40 @@ import CategoryCard from './CategoryCard';
 import SmallGrid from './SmallGrid';
 
 const CategorySection = () => {
+  const category = [
+    "smartphones",
+    "laptops",
+    "fragrances",
+    "beauty",
+    "skin-care",
+    "groceries",
+    "home-decoration",
+    "furniture",
+    "tops",
+    "womens-dresses",
+    "womens-shoes",
+    "mens-shirts",
+    "sports-accessories",
+    "mens-shoes",
+    "mens-watches",
+    "womens-watches",
+    "womens-bags",
+    "womens-jewellery",
+    "sunglasses",
+    "kitchen-accessories",
+    "motorcycle",
+    "mobile-accessories",
+    
+   
+  ];
+    
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 px-6 -mt-20">
-      <CategoryCard title="Shop for your home essentials">
-        <SmallGrid category="laptops" />
-      </CategoryCard>
-
-      <CategoryCard title="Shop for your home essentials">
-        <SmallGrid category="groceries" />
-      </CategoryCard>
-
-      <CategoryCard title="Shop for your home essentials">
-        <SmallGrid category="mens-watches" />
-      </CategoryCard>
-
-      <CategoryCard title="Shop for your home essentials">
-        <SmallGrid category="womens-bags" />
-      </CategoryCard>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4  -mt-20">
+      {category.map((cat) => (
+        <CategoryCard key={cat} >
+          <SmallGrid category={cat}/>
+        </CategoryCard>
+   ))}
     </div>
   );
 };

@@ -16,7 +16,7 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <ul className="hidden md:flex gap-6 text-lg">
-            {["home", "products"].map((path) => (
+            {["home", ].map((path) => (
               <li key={path}>
                 <NavLink
                   to={`/${path}`}

@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const SmallGrid = ({ category }) => {
   const [products, setProducts] = useState([]);
@@ -28,18 +29,20 @@ const SmallGrid = ({ category }) => {
   }
 
   return (
-    <div className="max-w-sm mx-auto p-4">
+    <div className="max-w-sm mx-auto p-4 ">
       <h2 className="text-lg font-semibold mb-2">{category.toUpperCase()}</h2>
       <div className="grid grid-cols-2 gap-4">
         {products.map((item) => (
-          <div key={item.id} className="flex flex-col items-center">
-            <img
-              src={item.thumbnail}
-              alt={item.title}
-              className="w-full h-24 object-cover rounded"
-            />
-            <p className="text-xs mt-1 text-center">{item.title}</p>
-          </div>
+          <Link key={item.id} to="/products" state={{category:category}}>
+            <div  className="flex flex-col items-center">
+              <img
+                src={item.thumbnail}
+                alt={item.title}
+                className="w-full h-28 object-cover bg-gray-200 cursor-pointer  p-2"
+              />
+              <p className="text-xs mt-1 text-center">{item.title}</p>
+            </div>
+          </Link>
         ))}
       </div>
     </div>
