@@ -1,39 +1,28 @@
-import React, { useState, useEffect } from "react";
-import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import React, { useState, useContext } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
 import { IoSearchOutline } from "react-icons/io5";
 import { MdArrowDropDown } from "react-icons/md";
+import { GlobalContext } from "../context/GlobalContext";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("All");
+  const [search, setSearch] = useState(""); // input value
+  const [category, setCategory] = useState(""); // dropdown selected
   const navigate = useNavigate();
-  const location = useLocation();
-
-  const categories = ["All", "Laptops", "Phones", "Fragrance"];
-
-  // Auto-fill search input when category changes
-  useEffect(() => {
-    if (category !== "All") setSearch(category);
-    else setSearch("");
-  }, [category]);
-
-  // Reset on home page only
-  useEffect(() => {
-    if (location.pathname === "/") {
-      setSearch("");
-      setCategory("All");
-    }
-  }, [location.pathname]);
+  const { categories } = useContext(GlobalContext);
 
   const handleSearch = (e) => {
     e.preventDefault();
-    const query = search.trim();
-    if (!query) return;
+
+    // Determine query: typed input first, fallback to dropdown category
+    const query =
+      search.trim() || (category && category !== "All" ? category : "").trim();
+
+    if (!query) return; // prevent empty search
 
     navigate(`/products?search=${encodeURIComponent(query)}`);
-    setIsOpen(false); // close mobile menu
+    setIsOpen(false);
   };
 
   return (
@@ -41,7 +30,13 @@ const Navbar = () => {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link to="/">
+          <Link
+            to="/"
+            onClick={() => {
+              setCategory("");
+              setSearch("");
+            }}
+          >
             <img className="h-16" src={logo} alt="Logo" />
           </Link>
 
@@ -55,9 +50,11 @@ const Navbar = () => {
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="appearance-none bg-gray-100 px-3 pr-8 text-sm outline-none border-r cursor-pointer h-full"
-                style={{ width: `${category.length + 6}ch` }}
+                style={{ width: `${category.length + 4}ch` }}
+                className="appearance-none bg-gray-100 px-3 pr-4 text-sm outline-none border-r cursor-pointer h-full min-w-15"
               >
+                {/* Placeholder option */}
+                <option value="" disabled>All</option>
                 {categories.map((cat) => (
                   <option key={cat} value={cat}>
                     {cat}
@@ -149,6 +146,6 @@ const Navbar = () => {
       )}
     </nav>
   );
-};;
+};
 
 export default Navbar;

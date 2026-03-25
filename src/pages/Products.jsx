@@ -2,6 +2,17 @@ import React, { useEffect, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import axios from "axios";
 
+// Skeleton for each product card
+const ProductCardSkeleton = () => (
+  <div className="bg-white shadow-md rounded-xl p-4 animate-pulse">
+    <div className="h-48 bg-gray-200 rounded-lg mb-3"></div> {/* image */}
+    <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div> {/* title */}
+    <div className="h-3 bg-gray-200 rounded w-1/2 mb-2"></div> {/* brand */}
+    <div className="h-4 bg-gray-200 rounded w-1/4 mb-2"></div> {/* price */}
+    <div className="h-3 bg-gray-200 rounded w-1/5"></div> {/* rating */}
+  </div>
+);
+
 const Products = () => {
   const { category } = useParams(); // /products/:category
   const location = useLocation();
@@ -18,7 +29,9 @@ const Products = () => {
 
     let url = "";
     if (searchQuery) {
-      url = `https://dummyjson.com/products/search?q=${encodeURIComponent(searchQuery)}`;
+      url = `https://dummyjson.com/products/search?q=${encodeURIComponent(
+        searchQuery,
+      )}`;
     } else if (category && category !== "All") {
       url = `https://dummyjson.com/products/category/${category.toLowerCase()}`;
     } else {
@@ -32,8 +45,20 @@ const Products = () => {
       .finally(() => setLoading(false));
   }, [category, searchQuery]);
 
-  if (loading) return <p className="text-center mt-4">Loading...</p>;
+  if (loading)
+    return (
+      <div className="container mx-auto px-4 py-6">
+        <h2 className="text-lg font-semibold mb-4 flex items-center justify-center animate-pulse bg-gray-200 h-6 w-48 rounded"></h2>
+        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mt-4">
+          {Array.from({ length: 8 }).map((_, idx) => (
+            <ProductCardSkeleton key={idx} />
+          ))}
+        </div>
+      </div>
+    );
+
   if (error) return <h2 className="text-center mt-10 text-red-500">{error}</h2>;
+
   if (!products.length)
     return (
       <h2 className="text-center mt-10 text-gray-500">No products found</h2>
