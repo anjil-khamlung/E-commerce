@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
 const Register = () => {
   const navigate = useNavigate();
 
-  const [showPassword, setShowPassword] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  
 
   const [formData, setFormData] = useState({
     email: "",
@@ -24,55 +25,49 @@ const Register = () => {
 
   const validate = () => {
     let newErrors = {};
-    //Email validation
-    if (!formData.email) {
-      newErrors.email = "Email is required";
-    } else if (!formData.email.includes("@")) {
+    if (!formData.email) newErrors.email = "Email is required";
+    else if (!formData.email.includes("@"))
       newErrors.email = "Enter a valid email";
-    }
 
-    //Password validdation
-   if (!formData.password) {
-     newErrors.password = "Password is required";
-   } else if (formData.password.length < 8) {
-     newErrors.password = "Password must be at least 8 characters";
-   } else if (!/[A-Z]/.test(formData.password)) {
-     newErrors.password = "Password must contain at least one uppercase letter";
-   } else if (!/\d/.test(formData.password)) {
-     newErrors.password = "Password must contain at least one number";
-   } else if (!/[@$!%*?&]/.test(formData.password)) {
-     newErrors.password =
-       "Password must contain at least one special character";
-   }
+    if (!formData.password) newErrors.password = "Password is required";
+    else if (formData.password.length < 8)
+      newErrors.password = "Password must be at least 8 characters";
 
-    //confirm password
-    if (!formData.confirmPassword) {
+    if (!formData.confirmPassword)
       newErrors.confirmPassword = "Confirm your password";
-    } else if (formData.password !== formData.confirmPassword) {
+    else if (formData.password !== formData.confirmPassword)
       newErrors.confirmPassword = "Passwords do not match";
-    }
 
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0; //checks if there are any errors and returns true (form is valid) or false (form has errors)
+    return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+const handleSubmit = (e) => {
+  e.preventDefault();
+  if (!validate()) return;
 
-    if (!validate()) return;
+  // Get existing users
+  const users = JSON.parse(localStorage.getItem("users")) || [];
 
-    console.log("user data:", formData);
+  // Add new user
+  users.push({
+    email: formData.email,
+    password: formData.password,
+  });
 
-    //Api call
+  // Save back to localStorage
+  localStorage.setItem("users", JSON.stringify(users));
 
-    setFormData({
-      email: "",
-      password: "",
-      confirmPassword: "",
-    });
+  toast.success("Registered Successfully")
 
-    navigate("/login");
-  };
+  setFormData({
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  navigate("/login");
+};
 
   return (
     <div className="h-screen flex items-center justify-center bg-gray-100">
@@ -82,7 +77,6 @@ const Register = () => {
       >
         <h1 className="text-3xl font-bold text-center">Register</h1>
 
-        {/*email*/}
         <div>
           <label className="font-semibold">Email</label>
           <input
@@ -91,14 +85,13 @@ const Register = () => {
             value={formData.email}
             onChange={handleChange}
             className="w-full border p-2 rounded mt-1"
-            placeholder="Example: abe@gmail.com"
+            placeholder="Example: abc@gmail.com"
           />
           {errors.email && (
             <p className="text-red-500 text-sm">{errors.email}</p>
           )}
         </div>
 
-        {/*password*/}
         <div className="relative">
           <label className="font-semibold">Password</label>
           <input
@@ -107,7 +100,7 @@ const Register = () => {
             value={formData.password}
             onChange={handleChange}
             className="w-full border p-2 rounded mt-1"
-            placeholder="Example: abc@134DE"
+            placeholder="Example: Abc@1234"
           />
           <span
             onClick={() => setShowPassword(!showPassword)}
@@ -120,17 +113,15 @@ const Register = () => {
           )}
         </div>
 
-        {/*confirmPassword*/}
-
         <div className="relative">
-          <label className="font-semibold">confirmPassword</label>
+          <label className="font-semibold">Confirm Password</label>
           <input
             type={showConfirmPassword ? "text" : "password"}
             name="confirmPassword"
             value={formData.confirmPassword}
             onChange={handleChange}
             className="w-full border p-2 rounded mt-1"
-            placeholder="Example: abc@134DE"
+            placeholder="Example: Abc@1234"
           />
           <span
             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
@@ -144,8 +135,8 @@ const Register = () => {
         </div>
 
         <button
-          className="bg-blue-500  text-white py-2 rounded font-bold hover:bg-blue-600 transition cursor-pointer"
           type="submit"
+          className="bg-blue-500 text-white py-2 rounded font-bold hover:bg-blue-600 transition cursor-pointer"
         >
           Register
         </button>

@@ -60,7 +60,7 @@ const SmallGrid = ({ category }) => {
       <h2 className="text-lg font-semibold mb-2">{category.toUpperCase()}</h2>
       <div className="grid grid-cols-2 gap-4">
         {products.map((item) => (
-          <Link key={item.id} to={`/products/${category}`}>
+          <Link key={item.id} to={`/products?category=${category}`}>
             <div className="flex flex-col items-center">
               <div className="w-full h-28 bg-gray-100 rounded-lg overflow-hidden p-2">
                 <img

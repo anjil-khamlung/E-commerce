@@ -1,73 +1,90 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {  toast } from "react-toastify";
+
 
 const Login = () => {
-  const navigate = useNavigate()
-  const [errors, setErrors] = useState({})
-  const [showPassword,setShowPassword]=useState(false)
+  const navigate = useNavigate();
+  const [errors, setErrors] = useState({});
+  const [apiError, setApiError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
-    email: '',
-    password:'',
-  })
+    email: "",
+    password: "",
+  });
 
   const handleChange = (e) => {
     setFormData((prev) => ({
-      ...prev,[e.target.name]:e.target.value,
-    }))
-  }
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
 
   const validate = () => {
-    const newErrors={}
+    const newErrors = {};
 
-    //email validation
+    // Email validation
     if (!formData.email) {
-      newErrors.email="Email is required"
+      newErrors.email = "Email is required";
     } else if (!formData.email.includes("@")) {
-      newErrors.email="Enter valid email"
+      newErrors.email = "Enter a valid email";
     }
 
-    //password validation
-   if (!formData.password) {
-     newErrors.password = "Password is required";
-   } else if (formData.password.length < 8) {
-     newErrors.password = "Password must be at least 8 characters";
-   } else if (!/[A-Z]/.test(formData.password)) {
-     newErrors.password = "Password must contain at least one uppercase letter";
-   } else if (!/\d/.test(formData.password)) {
-     newErrors.password = "Password must contain at least one number";
-   } else if (!/[@$!%*?&]/.test(formData.password)) {
-     newErrors.password =
-       "Password must contain at least one special character";
+    // Password validation
+    if (!formData.password) {
+      newErrors.password = "Password is required";
+    } else if (formData.password.length < 8) {
+      newErrors.password = "Password must be at least 8 characters";
+    } else if (!/[A-Z]/.test(formData.password)) {
+      newErrors.password =
+        "Password must contain at least one uppercase letter";
+    } else if (!/\d/.test(formData.password)) {
+      newErrors.password = "Password must contain at least one number";
+    } else if (!/[@$!%*?&]/.test(formData.password)) {
+      newErrors.password =
+        "Password must contain at least one special character";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+ const handleSubmit = (e) => {
+   e.preventDefault();
+   setApiError("");
+
+   if (!validate()) return;
+
+   // Get registered users from localStorage
+   const users = JSON.parse(localStorage.getItem("users")) || [];
+
+   // Find a user with matching email and password
+   const user = users.find(
+     (u) => u.email === formData.email && u.password === formData.password,
+   );
+
+   if (user) {
+   toast.success("Login successful!");
+     localStorage.setItem("currentUser", JSON.stringify(user)); // for session
+     setFormData({ email: "", password: "" });
+     navigate("/");
+   } else {
+     setApiError("Invalid email or password");
    }
+ };
 
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-
-    if (!validate()) return
-    
-    //api call
-
-    setFormData({
-      email: '',
-      password:'',
-    })
-
-    navigate("/")
-  }
   return (
-    <div className=" h-screen flex items-center justify-center bg-gray-100">
+    <div className="h-screen flex items-center justify-center bg-gray-100">
       <form
         onSubmit={handleSubmit}
         className="bg-white p-8 rounded-xl w-96 flex flex-col gap-4"
       >
         <h1 className="text-3xl font-bold text-center">Login</h1>
 
-        {/*email*/}
-        <div >
+        {apiError && <p className="text-red-500 text-center">{apiError}</p>}
+
+        {/* Email */}
+        <div>
           <label className="font-semibold">Email</label>
           <input
             type="email"
@@ -75,25 +92,30 @@ const Login = () => {
             value={formData.email}
             onChange={handleChange}
             className="w-full border p-2 rounded mt-1"
-            placeholder="Example: abc@gmail.com"
+            placeholder="Enter your email"
           />
           {errors.email && (
             <p className="text-red-500 text-sm">{errors.email}</p>
           )}
         </div>
 
-        {/*password*/}
+        {/* Password */}
         <div className="relative">
           <label className="font-semibold">Password</label>
           <input
-            type={showPassword?"text":"password"}
+            type={showPassword ? "text" : "password"}
             name="password"
-            onChange={handleChange}
             value={formData.password}
+            onChange={handleChange}
             className="w-full border rounded p-2 mt-1"
-            placeholder="Example: abc@134DE"
+            placeholder="Enter your password"
           />
-          <span onClick={()=>setShowPassword(!showPassword)} className='absolute right-3 top-9 cursor-pointer'>{showPassword ? "🙈" : "🐵"}</span>
+          <span
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-3 top-9 cursor-pointer"
+          >
+            {showPassword ? "🙈" : "🐵"}
+          </span>
           {errors.password && (
             <p className="text-red-500 text-sm">{errors.password}</p>
           )}
@@ -101,13 +123,13 @@ const Login = () => {
 
         <button
           type="submit"
-          className="bg-blue-500 text-center text-white rounded font-bold p-2 hover:bg-blue-600 transition cursor-pointer"
+          className="bg-blue-500 text-white rounded font-bold p-2 hover:bg-blue-600 transition cursor-pointer"
         >
           Login
         </button>
       </form>
     </div>
   );
-}
+};
 
-export default Login
+export default Login;
