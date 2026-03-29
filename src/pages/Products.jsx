@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 // Skeleton loader for product cards
 const ProductCardSkeleton = () => (
@@ -14,6 +15,7 @@ const ProductCardSkeleton = () => (
 );
 
 const Products = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
 
@@ -99,9 +101,13 @@ const Products = () => {
             <p className="text-sm text-gray-500">{product.brand}</p>
             <p className="text-blue-500 font-bold mt-2">$ {product.price}</p>
             <p className="text-yellow-500 text-sm">⭐ {product.rating}</p>
-            <button className="mt-3 w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 cursor-pointer">
-              Add to Cart
-            </button>
+
+            <NavLink
+              to={`/product/${product.id}`}
+              className="block mt-3 w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 text-center"
+            >
+              See more
+            </NavLink>
           </div>
         ))}
       </div>

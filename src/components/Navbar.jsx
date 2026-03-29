@@ -5,6 +5,7 @@ import e_logo from "../assets/e_logo.png";
 import { IoSearchOutline } from "react-icons/io5";
 import { FaShoppingCart } from "react-icons/fa";
 import { FaUserCircle } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -44,6 +45,14 @@ const Navbar = () => {
     setIsOpen(false);
   };
 
+  const checkUser = () => {
+    if (!currentUser) {
+      toast.error("Please login first");
+    } else {
+      navigate("/cart");
+    }
+  }
+
   return (
     <nav className="bg-white shadow-lg sticky top-0 z-50">
       <div className="container mx-auto px-4">
@@ -79,7 +88,11 @@ const Navbar = () => {
           </form>
 
           {/* Cart  */}
-          <FaShoppingCart className="text-4xl text-blue-400 mx-4 cursor-pointer hover:text-blue-600 transition-colors" />
+          <button onClick={checkUser}>
+            
+              <FaShoppingCart className="text-4xl text-blue-400 mx-4 cursor-pointer hover:text-blue-600 transition-colors" />
+            
+          </button>
 
           {/* Desktop Buttons */}
           {!currentUser ? (
@@ -106,7 +119,10 @@ const Navbar = () => {
                 onClick={() => setIsOpen(!isOpen)}
               />
               {isOpen && (
-                <div ref={dropdownRef} className="absolute right-4 top-full mt-2 w-48 bg-white shadow-lg rounded-lg p-4">
+                <div
+                  ref={dropdownRef}
+                  className="absolute right-4 top-full mt-2 w-48 bg-white shadow-lg rounded-lg p-4"
+                >
                   <div className="flex flex-col  items-center gap-2 mt-4">
                     <span className="font-semibold">{currentUser.email}</span>
                     <button
