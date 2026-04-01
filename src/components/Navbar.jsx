@@ -82,7 +82,7 @@ const Navbar = () => {
             />
 
             {/* Search Button */}
-            <button className="bg-blue-400 flex items-center justify-center hover:bg-blue-600 transition-colors w-11 cursor-pointer">
+            <button className="bg-blue-500 flex items-center justify-center hover:bg-blue-600 transition-colors w-11 cursor-pointer">
               <IoSearchOutline className="text-white text-2xl" />
             </button>
           </form>
@@ -90,7 +90,7 @@ const Navbar = () => {
           {/* Cart  */}
           <button onClick={checkUser}>
             
-              <FaShoppingCart className="text-4xl text-blue-400 mx-4 cursor-pointer hover:text-blue-600 transition-colors" />
+              <FaShoppingCart className="text-4xl text-blue-500 mx-4 cursor-pointer hover:text-blue-600 transition-colors" />
             
           </button>
 
@@ -98,14 +98,14 @@ const Navbar = () => {
           {!currentUser ? (
             <div className="hidden md:flex gap-2">
               <NavLink
-                className="bg-blue-400 text-white hover:bg-blue-600 transition-colors px-3 py-1 rounded-md w-20 h-9 text-center"
+                className="bg-blue-500 text-white hover:bg-blue-600 transition-colors px-3 py-1 rounded-md w-20 h-9 text-center"
                 to="/login"
               >
                 Login
               </NavLink>
 
               <NavLink
-                className="bg-blue-400 text-white hover:bg-blue-600 transition-colors px-3 py-1 rounded-md w-20 h-9 text-center"
+                className="bg-blue-500 text-white hover:bg-blue-600 transition-colors px-3 py-1 rounded-md w-20 h-9 text-center"
                 to="/register"
               >
                 Register
@@ -115,7 +115,7 @@ const Navbar = () => {
             <>
               <FaUserCircle
                 size={35}
-                className="cursor-pointer text-blue-400  hover:text-blue-600 transition-colors"
+                className="cursor-pointer text-blue-500  hover:text-blue-600 transition-colors"
                 onClick={() => setIsOpen(!isOpen)}
               />
               {isOpen && (
@@ -126,7 +126,7 @@ const Navbar = () => {
                   <div className="flex flex-col  items-center gap-2 mt-4">
                     <span className="font-semibold">{currentUser.email}</span>
                     <button
-                      className="bg-blue-400 text-white hover:bg-blue-600 transition-colors px-3 py-1 mx-4 rounded-md w-20 h-9 text-center cursor-pointer"
+                      className="bg-blue-500 text-white hover:bg-blue-600 transition-colors px-3 py-1 mx-4 rounded-md w-20 h-9 text-center cursor-pointer"
                       onClick={logout}
                     >
                       Logout
@@ -154,7 +154,7 @@ const Navbar = () => {
             <NavLink
               to="/login"
               onClick={() => setIsOpen(false)}
-              className="bg-blue-400 text-white px-3 py-2 rounded-md text-center"
+              className="bg-blue-500 text-white px-3 py-2 rounded-md text-center"
             >
               Login
             </NavLink>
@@ -162,7 +162,7 @@ const Navbar = () => {
             <NavLink
               to="/register"
               onClick={() => setIsOpen(false)}
-              className="bg-blue-400 text-white px-3 py-2 rounded-md text-center"
+              className="bg-blue-500 text-white px-3 py-2 rounded-md text-center"
             >
               Register
             </NavLink>
