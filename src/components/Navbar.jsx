@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import e_logo from "../assets/e_logo.png";
@@ -9,31 +8,32 @@ import { toast } from "react-toastify";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
+
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
-    const dropdownRef = useRef(null);
+  const dropdownRef = useRef(null);
 
-  const currentUser = JSON.parse(localStorage.getItem("currentUser"))
-  
+  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
   const logout = () => {
     localStorage.removeItem("currentUser");
     window.location.reload();
   };
 
+  useEffect(() => {
+    const handleOutsideClick = (e) => {
+      if (!dropdownRef.current?.contains(e.target)) {
+        setIsOpen(false);
+      }
+    };
 
-    useEffect(() => {
-      const handleOutsideClick = (e) => {
-        if (!dropdownRef.current?.contains(e.target)) {
-          setIsOpen(false);
-        }
-      };
+    document.addEventListener("mousedown", handleOutsideClick);
 
-      document.addEventListener("mousedown", handleOutsideClick);
-
-      return () => {
-        document.removeEventListener("mousedown", handleOutsideClick);
-      };
-    }, []);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, []);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -51,7 +51,7 @@ const Navbar = () => {
     } else {
       navigate("/cart");
     }
-  }
+  };
 
   return (
     <nav className="bg-white shadow-lg sticky top-0 z-50">
@@ -89,9 +89,7 @@ const Navbar = () => {
 
           {/* Cart  */}
           <button onClick={checkUser}>
-            
-              <FaShoppingCart className="text-4xl text-blue-500 mx-4 cursor-pointer hover:text-blue-600 transition-colors" />
-            
+            <FaShoppingCart className="text-4xl text-blue-500 mx-4 cursor-pointer hover:text-blue-600 transition-colors" />
           </button>
 
           {/* Desktop Buttons */}
@@ -139,8 +137,8 @@ const Navbar = () => {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden text-3xl cursor-pointer"
-            onClick={() => setIsOpen(!isOpen)}
+            className="md:hidden text-4xl cursor-pointer"
+            onClick={() => setIsMobileOpen(!isOpen)}
           >
             ☰
           </button>
@@ -148,12 +146,12 @@ const Navbar = () => {
       </div>
 
       {/* Mobile Menu */}
-      {isOpen && (
+      {isMobileOpen && (
         <div className="absolute right-4 top-full mt-2 w-48 bg-white shadow-lg rounded-lg p-4 md:hidden">
           <div className="flex flex-col gap-2 mt-4">
             <NavLink
               to="/login"
-              onClick={() => setIsOpen(false)}
+              onClick={() => setIsMobileOpen(false)}
               className="bg-blue-500 text-white px-3 py-2 rounded-md text-center"
             >
               Login
@@ -161,7 +159,7 @@ const Navbar = () => {
 
             <NavLink
               to="/register"
-              onClick={() => setIsOpen(false)}
+              onClick={() => setIsMobileOpen(false)}
               className="bg-blue-500 text-white px-3 py-2 rounded-md text-center"
             >
               Register
@@ -174,4 +172,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
