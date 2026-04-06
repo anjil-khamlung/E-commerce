@@ -56,7 +56,7 @@ const Navbar = () => {
   return (
     <nav className="bg-white shadow-lg sticky top-0 z-50">
       <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center h-15">
+        <div className="flex justify-between items-center h-15 gap-2">
           {/* Logo */}
           <Link
             to="/"
@@ -138,7 +138,7 @@ const Navbar = () => {
           {/* Mobile Menu Button */}
           <button
             className="md:hidden text-4xl cursor-pointer"
-            onClick={() => setIsMobileOpen(!isOpen)}
+            onClick={() => setIsMobileOpen(!isMobileOpen)}
           >
             ☰
           </button>
