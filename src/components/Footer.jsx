@@ -28,9 +28,7 @@ const Footer = () => {
             <Link to="/cart" className="hover:text-gray-700">
               Cart
             </Link>
-            <Link to="/checkout" className="hover:text-gray-700">
-              Checkout
-            </Link>
+        
           </div>
         </div>
 
@@ -57,12 +55,7 @@ const Footer = () => {
               Watches
             </Link>
 
-            <Link
-              to="/products?category=fragrances"
-              className="hover:text-gray-700"
-            >
-              Perfumes
-            </Link>
+         
           </div>
         </div>
 

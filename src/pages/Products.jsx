@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { toast } from "react-toastify";
 import { FaStar } from "react-icons/fa";
 import { FaRegStar } from "react-icons/fa";
 
