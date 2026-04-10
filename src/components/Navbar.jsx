@@ -55,8 +55,8 @@ const Navbar = () => {
 
   return (
     <nav className="bg-white shadow-lg sticky top-0 z-50">
-      <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center h-15 gap-2">
+      <div className="max-w-7xl mx-auto px-2">
+        <div className="flex justify-between items-center h-15 gap-4">
           {/* Logo */}
           <Link
             to="/"
@@ -110,17 +110,14 @@ const Navbar = () => {
               </NavLink>
             </div>
           ) : (
-            <>
+            <div ref={dropdownRef} className="relative">
               <FaUserCircle
                 size={35}
-                className="cursor-pointer text-blue-500  hover:text-blue-600 transition-colors"
+                className="cursor-pointer text-blue-500  hover:text-blue-600 transition-colors shrink-0"
                 onClick={() => setIsOpen(!isOpen)}
               />
               {isOpen && (
-                <div
-                  ref={dropdownRef}
-                  className="absolute right-4 top-full mt-2 w-48 bg-white shadow-lg rounded-lg p-4"
-                >
+                <div className="absolute right-4 top-full mt-2 w-48 bg-white shadow-lg rounded-lg p-4">
                   <div className="flex flex-col  items-center gap-2 mt-4">
                     <span className="font-semibold">{currentUser.email}</span>
                     <button
@@ -132,21 +129,23 @@ const Navbar = () => {
                   </div>
                 </div>
               )}
-            </>
+            </div>
           )}
 
           {/* Mobile Menu Button */}
-          <button
-            className="md:hidden text-4xl cursor-pointer"
-            onClick={() => setIsMobileOpen(!isMobileOpen)}
-          >
-            ☰
-          </button>
+          {!currentUser && (
+            <button
+              className="md:hidden text-4xl cursor-pointer text-blue-500"
+              onClick={() => setIsMobileOpen(!isMobileOpen)}
+            >
+              ☰
+            </button>
+          )}
         </div>
       </div>
 
       {/* Mobile Menu */}
-      {isMobileOpen && (
+      {!currentUser && isMobileOpen && (
         <div className="absolute right-4 top-full mt-2 w-48 bg-white shadow-lg rounded-lg p-4 md:hidden">
           <div className="flex flex-col gap-2 mt-4">
             <NavLink

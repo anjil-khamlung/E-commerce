@@ -35,7 +35,7 @@ const Checkout = () => {
 
   const placeOrder = () => {
     if (!form.name || !form.email || !form.address) {
-      alert("Please fill all required fields");
+      toast.error("Please fill all required fields");
       return;
     }
 

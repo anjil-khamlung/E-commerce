@@ -5,9 +5,13 @@ const Cart = () => {
   const navigate = useNavigate();
   const [cart, setCart] = useState([]);
 
+
+
   useEffect(() => {
+   
     const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
     setCart(storedCart);
+    
   }, []);
 
   // Remove item from cart
