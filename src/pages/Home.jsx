@@ -7,7 +7,6 @@ import perfumes from "../assets/perfumes.jpg";
 import CategorySection from "../components/CategorySection";
 
 const Home = () => {
-  // category info to each image
   const images = [
     { src: laptops, category: "laptops" },
     { src: perfumes, category: "fragrances" },
@@ -26,39 +25,41 @@ const Home = () => {
   };
 
   return (
-    <div className="relative px-3">
+    <div className="relative px-2 sm:px-3">
+      {/* Slider */}
       <div className="relative">
-        {/* Wrap image in Link to category page */}
         <Link to={`/products?category=${images[current].category}`}>
           <img
             src={images[current].src}
             alt={images[current].category}
-            className="h-[calc(100vh-4rem)] w-full object-cover cursor-pointer"
+            className="
+              w-full object-cover cursor-pointer
+              h-55 sm:h-75 md:h-125 lg:h-[calc(100vh-4rem)]
+            "
           />
         </Link>
 
-        {/* Bottom Fade Gradient */}
-        <div className="absolute bottom-0 left-0 w-full h-3/5 bg-linear-to-t from-gray-200 to-transparent pointer-events-none"></div>
+        {/* Gradient */}
+        <div className="absolute bottom-0 left-0 w-full h-1/2 sm:h-3/5 bg-linear-to-t from-gray-200 to-transparent pointer-events-none"></div>
       </div>
 
-      {/* Left Button */}
+      {/* Buttons */}
       <button
         onClick={prevSlide}
-        className="absolute left-5 top-[7%] -translate-y-1/2 bg-white/50 hover:bg-white text-black p-3 rounded-full cursor-pointer"
+        className="absolute left-5 top-[5.5%] -translate-y-1/2 bg-white/60 hover:bg-white text-black p-3 rounded-full cursor-pointer"
       >
         ❮
       </button>
 
-      {/* Right Button */}
       <button
         onClick={nextSlide}
-        className="absolute right-5 top-[7%] -translate-y-1/2 bg-white/50 hover:bg-white text-black p-3 rounded-full cursor-pointer"
+        className="absolute right-5 top-[5.5%] -translate-y-1/2 bg-white/60 hover:bg-white text-black p-3 rounded-full cursor-pointer"
       >
         ❯
       </button>
 
-      {/* Overlay */}
-      <div className="relative -mt-95 px-2">
+      {/* Category Section */}
+      <div className="mt-4 sm:-mt-20 md:-mt-87 relative z-10">
         <CategorySection />
       </div>
     </div>

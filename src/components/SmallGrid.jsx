@@ -62,7 +62,7 @@ const SmallGrid = ({ category }) => {
         {products.map((item) => (
           <Link key={item.id} to={`/products?category=${category}`}>
             <div className="flex flex-col items-center">
-              <div className="w-full h-28 bg-gray-100 rounded-lg overflow-hidden p-2">
+              <div className="w-full h-28 bg-gray-100  overflow-hidden p-2">
                 <img
                   src={item.thumbnail}
                   alt={item.title}
