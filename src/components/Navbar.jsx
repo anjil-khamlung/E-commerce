@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import e_logo from "../assets/e_logo.png";
+import logo from "../assets/logo.png";
 import { IoSearchOutline } from "react-icons/io5";
 import { FaShoppingCart } from "react-icons/fa";
 import { FaUserCircle } from "react-icons/fa";
@@ -64,7 +64,7 @@ const Navbar = () => {
               setSearch("");
             }}
           >
-            <img className="h-15" src={e_logo} alt="Logo" />
+            <img className="h-15" src={logo} alt="Logo" />
           </Link>
 
           {/* Search Bar */}
