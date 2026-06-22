@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -42,31 +43,32 @@ const Register = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-const handleSubmit = (e) => {
+const handleSubmit = async (e) => {
   e.preventDefault();
+
   if (!validate()) return;
 
-  // Get existing users
-  const users = JSON.parse(localStorage.getItem("users")) || [];
+  try {
+    await axios.post("http://localhost:5000/api/auth/register", {
+      email: formData.email,
+      password: formData.password,
+    });
 
-  // Add new user
-  users.push({
-    email: formData.email,
-    password: formData.password,
-  });
+    toast.success("Registered Successfully");
 
-  // Save back to localStorage
-  localStorage.setItem("users", JSON.stringify(users));
+    setFormData({
+      email: "",
+      password: "",
+      confirmPassword: "",
+    });
 
-  toast.success("Registered Successfully")
-
-  setFormData({
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
-
-  navigate("/login");
+    navigate("/login");
+  }catch (error) {
+      console.log(error);
+      console.log(error.response?.data);
+  
+      toast.error(error.response?.data?.message || error.message);
+    }
 };
 
   return (

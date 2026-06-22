@@ -19,34 +19,37 @@ const ProductDetails = () => {
     return <h2 className="text-center mt-10">Loading...</h2>;
     }
     
-      const addToCart = (product) => {
-        const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+   const addToCart = async (product) => {
+     const token = localStorage.getItem("token");
 
-        // If not logged in → go to login page
-        if (!currentUser) {
-          toast.error("Please login first");
-          return;
-        }
+     if (!token) {
+       toast.error("Please login first");
+       return;
+     }
 
-        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+     try {
+       await axios.post(
+         "http://localhost:5000/api/cart/add",
+         {
+           id: product.id,
+           title: product.title,
+           price: product.price,
+           thumbnail: product.thumbnail,
+         },
+         {
+           headers: {
+             Authorization: `Bearer ${token}`,
+           },
+         },
+       );
 
-        const existingProduct = cart.find((item) => item.id === product.id);
+       toast.success("Added to cart");
+     } catch (error) {
+       console.error(error);
 
-        if (existingProduct) {
-          existingProduct.quantity += 1;
-        } else {
-          cart.push({
-            id: product.id,
-            title: product.title,
-            price: product.price,
-            thumbnail: product.thumbnail,
-            quantity: 1,
-          });
-        }
-
-        localStorage.setItem("cart", JSON.stringify(cart));
-        toast.success("Added to cart");
-    };
+       toast.error(error.response?.data?.message || "Failed to add item");
+     }
+   };
     
     
 

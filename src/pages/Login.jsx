@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import {  toast } from "react-toastify";
 
@@ -49,29 +50,35 @@ const Login = () => {
     return Object.keys(newErrors).length === 0;
   };
 
- const handleSubmit = (e) => {
-   e.preventDefault();
-   setApiError("");
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setApiError("");
 
-   if (!validate()) return;
+  if (!validate()) return;
 
-   // Get registered users from localStorage
-   const users = JSON.parse(localStorage.getItem("users")) || [];
+  try {
+    const res = await axios.post("http://localhost:5000/api/auth/login", {
+      email: formData.email,
+      password: formData.password,
+    });
 
-   // Find a user with matching email and password
-   const user = users.find(
-     (u) => u.email === formData.email && u.password === formData.password,
-   );
+    localStorage.setItem("token", res.data.token);
 
-   if (user) {
-   toast.success("Login successful!");
-     localStorage.setItem("currentUser", JSON.stringify(user)); // for session
-     setFormData({ email: "", password: "" });
-     navigate("/");
-   } else {
-     setApiError("Invalid email or password");
-   }
- };
+    toast.success("Login successful!");
+
+    setFormData({
+      email: "",
+      password: "",
+    });
+
+    navigate("/");
+  } catch (error) {
+    console.log(error);
+    console.log(error.response?.data);
+
+    toast.error(error.response?.data?.message || error.message);
+  }
+};
 
   return (
     <div className="h-screen flex items-center justify-center bg-gray-100">

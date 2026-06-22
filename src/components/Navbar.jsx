@@ -6,6 +6,7 @@ import { FaShoppingCart } from "react-icons/fa";
 import { FaUserCircle } from "react-icons/fa";
 import { toast } from "react-toastify";
 
+
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
@@ -14,12 +15,15 @@ const Navbar = () => {
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
 
-  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+const token = localStorage.getItem("token");
+const isLoggedIn = !!token;
 
-  const logout = () => {
-    localStorage.removeItem("currentUser");
-    window.location.reload();
-  };
+const logout = () => {
+  localStorage.removeItem("token");
+  toast.success("Logged out successfully");
+  navigate("/");
+  window.location.reload();
+};
 
   useEffect(() => {
     const handleOutsideClick = (e) => {
@@ -46,7 +50,7 @@ const Navbar = () => {
   };
 
   const checkUser = () => {
-    if (!currentUser) {
+    if (!isLoggedIn) {
       toast.error("Please login first");
     } else {
       navigate("/cart");
@@ -93,7 +97,7 @@ const Navbar = () => {
           </button>
 
           {/* Desktop Buttons */}
-          {!currentUser ? (
+          {!isLoggedIn ? (
             <div className="hidden md:flex gap-2">
               <NavLink
                 className="bg-blue-500 text-white hover:bg-blue-600 transition-colors px-3 py-1 rounded-md w-20 h-9 text-center"
@@ -119,7 +123,7 @@ const Navbar = () => {
               {isOpen && (
                 <div className="absolute right-4 top-full mt-2 w-48 bg-white shadow-lg rounded-lg p-4">
                   <div className="flex flex-col  items-center gap-2 mt-4">
-                    <span className="font-semibold">{currentUser.email}</span>
+                    <span className="font-semibold">Logged In</span>
                     <button
                       className="bg-blue-500 text-white hover:bg-blue-600 transition-colors px-3 py-1 mx-4 rounded-md w-20 h-9 text-center cursor-pointer"
                       onClick={logout}
@@ -133,7 +137,7 @@ const Navbar = () => {
           )}
 
           {/* Mobile Menu Button */}
-          {!currentUser && (
+          {!isLoggedIn && (
             <button
               className="md:hidden text-4xl cursor-pointer text-blue-500"
               onClick={() => setIsMobileOpen(!isMobileOpen)}
@@ -145,7 +149,7 @@ const Navbar = () => {
       </div>
 
       {/* Mobile Menu */}
-      {!currentUser && isMobileOpen && (
+      {!isLoggedIn && isMobileOpen && (
         <div className="absolute right-4 top-full mt-2 w-48 bg-white shadow-lg rounded-lg p-4 md:hidden">
           <div className="flex flex-col gap-2 mt-4">
             <NavLink

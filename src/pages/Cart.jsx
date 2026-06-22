@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -7,38 +9,83 @@ const Cart = () => {
 
 
 
-  useEffect(() => {
-   
-    const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
-    setCart(storedCart);
-    
-  }, []);
+useEffect(() => {
+  fetchCart();
+}, []);
+
+const fetchCart = async () => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const res = await axios.get("http://localhost:5000/api/cart", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    setCart(res.data);
+  } catch (error) {
+    console.error(error);
+  }
+};
 
   // Remove item from cart
-  const removeItem = (id) => {
-    const updatedCart = cart.filter((item) => item.id !== id);
-    setCart(updatedCart);
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
-  };
+const removeItem = async (id) => {
+  try {
+    const token = localStorage.getItem("token");
+
+    await axios.delete(`http://localhost:5000/api/cart/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    fetchCart();
+  } catch (error) {
+    console.error(error);
+  }
+};
 
   // Clear entire cart
-  const clearCart = () => {
-    setCart([]);
-    localStorage.removeItem("cart");
-  };
+ const clearCart = async () => {
+   try {
+     const token = localStorage.getItem("token");
+
+     await axios.delete("http://localhost:5000/api/cart", {
+       headers: {
+         Authorization: `Bearer ${token}`,
+       },
+     });
+
+     setCart([]);
+   } catch (error) {
+     console.error(error);
+   }
+ };
 
   // Update quantity of a cart item
-  const updateQuantity = (id, delta) => {
-    const updatedCart = cart.map((item) => {
-      if (item.id === id) {
-        const newQty = item.quantity + delta;
-        return { ...item, quantity: newQty > 1 ? newQty : 1 }; // minimum 1
-      }
-      return item;
-    });
-    setCart(updatedCart);
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
-  };
+ const updateQuantity = async (id, delta) => {
+   try {
+     const token = localStorage.getItem("token");
+
+     await axios.put(
+       "http://localhost:5000/api/cart/update",
+       {
+         productId: id,
+         delta,
+       },
+       {
+         headers: {
+           Authorization: `Bearer ${token}`,
+         },
+       },
+     );
+
+     fetchCart();
+   } catch (error) {
+     console.error(error);
+   }
+ };
 
   const subtotal = cart.reduce(
     (sum, item) => sum + item.price * item.quantity,
