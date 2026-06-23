@@ -138,7 +138,7 @@ const handleSubmit = async (e) => {
 
         <button
           type="submit"
-          className="bg-blue-500 text-white py-2 rounded font-bold hover:bg-blue-600 transition cursor-pointer"
+          className="bg-green-500 text-white py-2 rounded font-bold hover:bg-green-600 transition cursor-pointer"
         >
           Register
         </button>

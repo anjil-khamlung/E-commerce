@@ -9,6 +9,8 @@ import Cart from "../pages/Cart";
 import ProductDetails from "../pages/ProductDetails";
 import Checkout from "../pages/Checkout";
 import ProtectedRoute from "./ProtectedRoute";
+import PrivacyPolicy from "../pages/PrivacyPolicy";
+import TermsOfService from "../pages/TermsOfService";
 
 const router = createBrowserRouter([
   {
@@ -58,6 +60,14 @@ const router = createBrowserRouter([
     path: "register",
     element: <Register />,
   },
+  {
+    path: "privacy-policy",
+    element:<PrivacyPolicy/>,
+  },
+  {
+    path: "terms-of-service",
+    element:<TermsOfService/>,
+  }
 ]);
 
 export default router;

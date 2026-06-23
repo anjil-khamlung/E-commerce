@@ -28,24 +28,40 @@ const Products = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    setLoading(true);
-    setError("");
+useEffect(() => {
+  setLoading(true);
+  setError("");
 
-    // Decide API URL
-    const url = searchQuery
-      ? `https://dummyjson.com/products/search?q=${encodeURIComponent(searchQuery)}`
-      : categoryQuery
-        ? `https://dummyjson.com/products/category/${categoryQuery.toLowerCase()}`
-        : "https://dummyjson.com/products";
-
+  if (searchQuery) {
     axios
-      .get(url)
-      .then((res) => setProducts(res.data.products))
+      .get("https://dummyjson.com/products?limit=200")
+      .then((res) => {
+        const filtered = res.data.products.filter(
+          (product) =>
+            product.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            product.brand?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            product.category.toLowerCase().includes(searchQuery.toLowerCase()),
+        );
+
+        setProducts(filtered);
+      })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
-  }, [searchQuery, categoryQuery]);
 
+    return;
+  }
+
+  const url = categoryQuery
+    ? `https://dummyjson.com/products/category/${categoryQuery.toLowerCase()}`
+    : "https://dummyjson.com/products";
+
+  axios
+    .get(url)
+    .then((res) => setProducts(res.data.products))
+    .catch((err) => setError(err.message))
+    .finally(() => setLoading(false));
+}, [searchQuery, categoryQuery]);
+  
   // Loading skeleton
   if (loading) {
     return (
@@ -101,7 +117,7 @@ const Products = () => {
               {product.title}
             </h2>
             <p className="text-sm text-gray-500">{product.brand}</p>
-            <p className="text-blue-500 font-bold mt-2">$ {product.price}</p>
+            <p className="text-green-500 font-bold mt-2">$ {product.price}</p>
             <p className="flex items-center mt-2 text-yellow-500">
               {Array.from({ length: 5 }, (_, i) => {
                 const starValue = i + 1;
@@ -118,7 +134,7 @@ const Products = () => {
 
             <NavLink
               to={`/product/${product.id}`}
-              className="block mt-3 w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 text-center"
+              className="block mt-3 w-full bg-green-500 text-white py-2 rounded-3xl hover:bg-green-600 text-center"
             >
               See more
             </NavLink>

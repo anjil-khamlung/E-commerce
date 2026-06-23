@@ -122,13 +122,13 @@ const Checkout = () => {
 
               <div className="border-t pt-3 flex justify-between font-bold text-lg">
                 <span>Total</span>
-                <span className="text-blue-500">${total.toFixed(2)}</span>
+                <span className="text-green-500">${total.toFixed(2)}</span>
               </div>
             </div>
 
             <button
               onClick={placeOrder}
-              className="w-full mt-6 bg-blue-500 text-white py-3 rounded-md hover:bg-blue-600 cursor-pointer"
+              className="w-full mt-6 bg-green-500 text-white py-3 rounded-md hover:bg-green-600 cursor-pointer"
             >
               Place Order
             </button>

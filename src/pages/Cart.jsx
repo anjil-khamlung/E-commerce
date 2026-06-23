@@ -100,7 +100,7 @@ const removeItem = async (id) => {
         <h2 className="text-xl font-semibold">Your cart is empty</h2>
         <button
           onClick={() => navigate("/")}
-          className="mt-4 bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 cursor-pointer"
+          className="mt-4 bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600 cursor-pointer"
         >
           Continue Shopping
         </button>
@@ -128,7 +128,7 @@ const removeItem = async (id) => {
                 />
                 <div>
                   <h2 className="font-semibold">{item.title}</h2>
-                  <p className="text-blue-500">$ {item.price}</p>
+                  <p className="text-green-500">$ {item.price}</p>
                   <div className="flex items-center gap-2 mt-1">
                     <button
                       onClick={() => updateQuantity(item.id, -1)}
@@ -158,7 +158,7 @@ const removeItem = async (id) => {
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mt-4">
             <button
               onClick={() => navigate("/")}
-              className=" text-blue-500 px-6 py-2 cursor-pointer hover:text-blue-600 "
+              className=" text-green-500 px-6 py-2 cursor-pointer hover:text-green-600 "
             >
               ← Continue Shopping
             </button>
@@ -201,14 +201,14 @@ const removeItem = async (id) => {
               <div className="border-t pt-3 mt-3">
                 <div className="flex justify-between font-bold text-lg">
                   <span>Total</span>
-                  <span className="text-blue-500">${total.toFixed(2)}</span>
+                  <span className="text-green-500">${total.toFixed(2)}</span>
                 </div>
               </div>
             </div>
 
             <button
               onClick={() => navigate("/checkout")}
-              className="w-full bg-blue-500 text-white py-3 rounded-lg font-semibold cursor-pointer hover:bg-blue-600 transition-colors mb-3"
+              className="w-full bg-green-500 text-white py-3 rounded-lg font-semibold cursor-pointer hover:bg-green-600 transition-colors mb-3"
             >
               Proceed to Checkout
             </button>

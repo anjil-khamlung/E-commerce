@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import laptops from "../assets/laptops.webp";
 import phone from "../assets/phone.webp";
@@ -23,6 +23,15 @@ const Home = () => {
   const nextSlide = () => {
     setCurrent((prev) => (prev === images.length - 1 ? 0 : prev + 1));
   };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrent((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+    }, 3000); // changes every 3 seconds
+
+    return () => clearInterval(interval);
+  }, [images.length]);
+
 
   return (
     <div className="relative px-2 sm:px-3">

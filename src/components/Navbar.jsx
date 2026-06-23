@@ -2,7 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
 import { IoSearchOutline } from "react-icons/io5";
-import { FaShoppingCart } from "react-icons/fa";
+import { BsCart2 } from "react-icons/bs";
+
 import { FaUserCircle } from "react-icons/fa";
 import { toast } from "react-toastify";
 
@@ -58,7 +59,7 @@ const logout = () => {
   };
 
   return (
-    <nav className="bg-white shadow-lg sticky top-0 z-50">
+    <nav className="bg-gray-800 shadow-lg sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-2">
         <div className="flex justify-between items-center h-15 gap-4">
           {/* Logo */}
@@ -82,32 +83,35 @@ const logout = () => {
               placeholder="Search products..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="flex-1 px-3 text-sm outline-none"
+              className="flex-1 px-3 text-sm outline-none bg-white"
             />
 
             {/* Search Button */}
-            <button className="bg-blue-500 flex items-center justify-center hover:bg-blue-600 transition-colors w-11 cursor-pointer">
+            <button className="bg-green-500 flex items-center justify-center hover:bg-green-600 transition-colors w-11 cursor-pointer">
               <IoSearchOutline className="text-white text-2xl" />
             </button>
           </form>
 
           {/* Cart  */}
-          <button onClick={checkUser}>
-            <FaShoppingCart className="text-4xl text-blue-500 mx-4 cursor-pointer hover:text-blue-600 transition-colors" />
+          <button
+            className="text-white cursor-pointer px-3 py-2 text-center hover:border "
+            onClick={checkUser}
+          >
+            <BsCart2 className="text-3xl  " />
           </button>
 
           {/* Desktop Buttons */}
           {!isLoggedIn ? (
             <div className="hidden md:flex gap-2">
               <NavLink
-                className="bg-blue-500 text-white hover:bg-blue-600 transition-colors px-3 py-1 rounded-md w-20 h-9 text-center"
+                className=" text-white px-3 py-3 text-center hover:border  "
                 to="/login"
               >
-                Login
+                Sign In
               </NavLink>
 
               <NavLink
-                className="bg-blue-500 text-white hover:bg-blue-600 transition-colors px-3 py-1 rounded-md w-20 h-9 text-center"
+                className=" text-white  px-3 py-3 text-center hover:border "
                 to="/register"
               >
                 Register
@@ -117,7 +121,7 @@ const logout = () => {
             <div ref={dropdownRef} className="relative">
               <FaUserCircle
                 size={35}
-                className="cursor-pointer text-blue-500  hover:text-blue-600 transition-colors shrink-0"
+                className="cursor-pointer text-white  hover:text-green-600 transition-colors shrink-0"
                 onClick={() => setIsOpen(!isOpen)}
               />
               {isOpen && (
@@ -125,7 +129,7 @@ const logout = () => {
                   <div className="flex flex-col  items-center gap-2 mt-4">
                     <span className="font-semibold">Logged In</span>
                     <button
-                      className="bg-blue-500 text-white hover:bg-blue-600 transition-colors px-3 py-1 mx-4 rounded-md w-20 h-9 text-center cursor-pointer"
+                      className="bg-green-500 text-white hover:bg-green-600 transition-colors px-3 py-1 mx-4 rounded-md w-20 h-9 text-center cursor-pointer"
                       onClick={logout}
                     >
                       Logout
@@ -139,7 +143,7 @@ const logout = () => {
           {/* Mobile Menu Button */}
           {!isLoggedIn && (
             <button
-              className="md:hidden text-4xl cursor-pointer text-blue-500"
+              className="md:hidden text-4xl cursor-pointer text-green-500"
               onClick={() => setIsMobileOpen(!isMobileOpen)}
             >
               ☰
@@ -155,7 +159,7 @@ const logout = () => {
             <NavLink
               to="/login"
               onClick={() => setIsMobileOpen(false)}
-              className="bg-blue-500 text-white px-3 py-2 rounded-md text-center"
+              className="bg-green-500 text-white px-3 py-2 rounded-md text-center"
             >
               Login
             </NavLink>
@@ -163,7 +167,7 @@ const logout = () => {
             <NavLink
               to="/register"
               onClick={() => setIsMobileOpen(false)}
-              className="bg-blue-500 text-white px-3 py-2 rounded-md text-center"
+              className="bg-green-500 text-white px-3 py-2 rounded-md text-center"
             >
               Register
             </NavLink>
