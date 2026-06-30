@@ -3,7 +3,8 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FaStar } from "react-icons/fa";
 import { FaRegStar } from "react-icons/fa";
-
+import { API_CONFIG } from "../services/config";
+import Fuse from "fuse.js";
 
 // Skeleton loader for product cards
 const ProductCardSkeleton = () => (
@@ -34,16 +35,16 @@ useEffect(() => {
 
   if (searchQuery) {
     axios
-      .get("https://dummyjson.com/products?limit=200")
+      .get(`${API_CONFIG.DUMMY_JSON_URL}/products?limit=500`)
       .then((res) => {
-        const filtered = res.data.products.filter(
-          (product) =>
-            product.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            product.brand?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            product.category.toLowerCase().includes(searchQuery.toLowerCase()),
-        );
+        const fuse = new Fuse(res.data.products, {
+          keys: ["title", "brand", "category"],
+          threshold: 0.4,
+        });
 
-        setProducts(filtered);
+        const results = fuse.search(searchQuery);
+
+        setProducts(results.map((result) => result.item));
       })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
@@ -52,8 +53,8 @@ useEffect(() => {
   }
 
   const url = categoryQuery
-    ? `https://dummyjson.com/products/category/${categoryQuery.toLowerCase()}`
-    : "https://dummyjson.com/products";
+    ? `${API_CONFIG.DUMMY_JSON_URL}/products/category/${categoryQuery.toLowerCase()}`
+    : `${API_CONFIG.DUMMY_JSON_URL}/products`;
 
   axios
     .get(url)
@@ -84,7 +85,7 @@ useEffect(() => {
   // No products
   if (!products.length) {
     return (
-      <h2 className="text-center mt-10 text-gray-500">No products found</h2>
+      <h2 className="text-center mt-30 text-gray-500 text-2xl">No products found</h2>
     );
   }
 
@@ -93,7 +94,7 @@ useEffect(() => {
       {/* Heading */}
       <h2 className="text-lg font-semibold mb-4 flex items-center justify-center">
         {searchQuery
-          ? `Search results for "${searchQuery}"`
+          ? `Showing results for "${searchQuery}"`
           : categoryQuery
             ? categoryQuery.toUpperCase()
             : "All Products"}
@@ -106,13 +107,15 @@ useEffect(() => {
             key={product.id}
             className="bg-white shadow-md  p-4 hover:shadow-xl transition"
           >
-            <div className="h-48 flex justify-center items-center">
-              <img
-                src={product.thumbnail}
-                alt={product.title}
-                className="h-full object-contain"
-              />
-            </div>
+            <NavLink to={`/product/${product.id}`}>
+              <div className="h-48 flex justify-center items-center ">
+                <img
+                  src={product.thumbnail}
+                  alt={product.title}
+                  className="max-w-full max-h-full object-contain"
+                />
+              </div>
+            </NavLink>
             <h2 className="text-md font-semibold mt-3 line-clamp-2">
               {product.title}
             </h2>

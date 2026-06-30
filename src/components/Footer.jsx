@@ -85,10 +85,37 @@ const Footer = () => {
           <p className="text-sm mt-2">Kathmandu, Nepal</p>
 
           <div className="flex gap-4 mt-5 text-xl">
-            <FaFacebook className="cursor-pointer hover:text-white transition" />
-            <FaInstagram className="cursor-pointer hover:text-white transition" />
-            <FaTwitter className="cursor-pointer hover:text-white transition" />
-            <FaGithub className="cursor-pointer hover:text-white transition" />
+            <a
+              href="https://facebook.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FaFacebook className="cursor-pointer hover:text-white transition" />
+            </a>
+
+            <a
+              href="https://instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FaInstagram className="cursor-pointer hover:text-white transition" />
+            </a>
+
+            <a
+              href="https://twitter.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FaTwitter className="cursor-pointer hover:text-white transition" />
+            </a>
+
+            <a
+              href="https://github.com/anjil-khamlung"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FaGithub className="cursor-pointer hover:text-white transition" />
+            </a>
           </div>
         </div>
       </div>
@@ -98,7 +125,7 @@ const Footer = () => {
         <div className="max-w-7xl mx-auto px-6 py-5 flex flex-col sm:flex-row justify-between items-center text-sm text-gray-300">
           <p>© {new Date().getFullYear()} MyShop. All rights reserved.</p>
 
-          <div className="flex gap-4 mt-3 sm:mt-0">
+          <div className="flex items-center gap-4 mt-3 sm:mt-0">
             <Link to="/privacy-policy" className="hover:text-white transition">
               Privacy Policy
             </Link>
@@ -109,6 +136,18 @@ const Footer = () => {
             >
               Terms of Service
             </Link>
+
+            <button
+              onClick={() =>
+                window.scrollTo({
+                  top: 0,
+                  behavior: "smooth",
+                })
+              }
+              className="  text-green-500 px-3 py-1  cursor-pointer"
+            >
+              ↑ Back to Top
+            </button>
           </div>
         </div>
       </div>

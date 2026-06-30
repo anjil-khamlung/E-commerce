@@ -3,7 +3,6 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
 import { IoSearchOutline } from "react-icons/io5";
 import { BsCart2 } from "react-icons/bs";
-
 import { FaUserCircle } from "react-icons/fa";
 import { toast } from "react-toastify";
 
@@ -16,16 +15,20 @@ const Navbar = () => {
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
 
-const token = localStorage.getItem("token");
-const isLoggedIn = !!token;
+  const token = localStorage.getItem("token");
+  const isLoggedIn = !!token;
 
-const logout = () => {
-  localStorage.removeItem("token");
-  toast.success("Logged out successfully");
-  navigate("/");
-  window.location.reload();
-};
+  const mobileMenuRef = useRef(null);
 
+  // Auth
+  const logout = () => {
+    localStorage.removeItem("token");
+    toast.success("Logged out successfully");
+    navigate("/");
+    window.location.reload();
+  };
+
+  // Dropdown
   useEffect(() => {
     const handleOutsideClick = (e) => {
       if (!dropdownRef.current?.contains(e.target)) {
@@ -40,6 +43,7 @@ const logout = () => {
     };
   }, []);
 
+  // Search
   const handleSearch = (e) => {
     e.preventDefault();
 
@@ -50,6 +54,7 @@ const logout = () => {
     setIsOpen(false);
   };
 
+  // Protected Navigation
   const checkUser = () => {
     if (!isLoggedIn) {
       toast.error("Please login first");
@@ -58,10 +63,29 @@ const logout = () => {
     }
   };
 
+  //open close menu dropdown
+  useEffect(() => {
+    const handleOutsideClick = (e) => {
+      if (
+        isMobileOpen &&
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(e.target)
+      ) {
+        setIsMobileOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleOutsideClick);
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [isMobileOpen]);
+
   return (
     <nav className="bg-gray-800 shadow-lg sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-2">
-        <div className="flex justify-between items-center h-15 gap-4">
+        <div className="flex items-center h-15 gap-4">
           {/* Logo */}
           <Link
             to="/"
@@ -94,7 +118,7 @@ const logout = () => {
 
           {/* Cart  */}
           <button
-            className="text-white cursor-pointer px-3 py-2 text-center hover:border "
+            className="text-white cursor-pointer px-3 py-2 text-center border border-transparent hover:border-white"
             onClick={checkUser}
           >
             <BsCart2 className="text-3xl  " />
@@ -104,17 +128,17 @@ const logout = () => {
           {!isLoggedIn ? (
             <div className="hidden md:flex gap-2">
               <NavLink
-                className=" text-white px-3 py-3 text-center hover:border  "
+                className=" text-white px-3 py-3 text-center border border-transparent hover:border-white  "
                 to="/login"
               >
                 Sign In
               </NavLink>
 
               <NavLink
-                className=" text-white  px-3 py-3 text-center hover:border "
+                className=" text-white  px-3 py-3 text-center border border-transparent hover:border-white "
                 to="/register"
               >
-                Register
+                Sign Up
               </NavLink>
             </div>
           ) : (
@@ -140,40 +164,43 @@ const logout = () => {
             </div>
           )}
 
-          {/* Mobile Menu Button */}
-          {!isLoggedIn && (
-            <button
-              className="md:hidden text-4xl cursor-pointer text-green-500"
-              onClick={() => setIsMobileOpen(!isMobileOpen)}
-            >
-              ☰
-            </button>
-          )}
+          {/* Mobile Menu  */}
+          <div ref={mobileMenuRef} className="relative">
+            {!isLoggedIn && (
+              <button
+                className="md:hidden text-4xl cursor-pointer text-white"
+                onClick={() => setIsMobileOpen(!isMobileOpen)}
+              >
+                ☰
+              </button>
+            )}
+
+            {!isLoggedIn && isMobileOpen && (
+              <div className="absolute right-0 top-full mt-2 w-48 bg-white shadow-lg rounded-lg p-4 md:hidden">
+                <div className="flex flex-col gap-2">
+                  <NavLink
+                    to="/login"
+                    onClick={() => setIsMobileOpen(false)}
+                    className="bg-green-500 text-white px-3 py-2 rounded-md text-center"
+                  >
+                    Login
+                  </NavLink>
+
+                  <NavLink
+                    to="/register"
+                    onClick={() => setIsMobileOpen(false)}
+                    className="bg-green-500 text-white px-3 py-2 rounded-md text-center"
+                  >
+                    Register
+                  </NavLink>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
-      {/* Mobile Menu */}
-      {!isLoggedIn && isMobileOpen && (
-        <div className="absolute right-4 top-full mt-2 w-48 bg-white shadow-lg rounded-lg p-4 md:hidden">
-          <div className="flex flex-col gap-2 mt-4">
-            <NavLink
-              to="/login"
-              onClick={() => setIsMobileOpen(false)}
-              className="bg-green-500 text-white px-3 py-2 rounded-md text-center"
-            >
-              Login
-            </NavLink>
-
-            <NavLink
-              to="/register"
-              onClick={() => setIsMobileOpen(false)}
-              className="bg-green-500 text-white px-3 py-2 rounded-md text-center"
-            >
-              Register
-            </NavLink>
-          </div>
-        </div>
-      )}
+     
     </nav>
   );
 };

@@ -7,10 +7,11 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Cart from "../pages/Cart";
 import ProductDetails from "../pages/ProductDetails";
-import Checkout from "../pages/Checkout";
 import ProtectedRoute from "./ProtectedRoute";
 import PrivacyPolicy from "../pages/PrivacyPolicy";
 import TermsOfService from "../pages/TermsOfService";
+import PaymentSuccess from "../pages/PaymentSuccess";
+import PaymentFail from "../pages/PaymentFail";
 
 const router = createBrowserRouter([
   {
@@ -31,10 +32,6 @@ const router = createBrowserRouter([
         element: <Products />,
       },
       {
-        path: "products/:category",
-        element: <Products />,
-      },
-      {
         path: "cart",
         element: (
           <ProtectedRoute>
@@ -46,10 +43,7 @@ const router = createBrowserRouter([
         path: "product/:id",
         element: <ProductDetails />,
       },
-      {
-        path: "checkout",
-        element: <Checkout />,
-      },
+    
     ],
   },
   {
@@ -62,12 +56,20 @@ const router = createBrowserRouter([
   },
   {
     path: "privacy-policy",
-    element:<PrivacyPolicy/>,
+    element: <PrivacyPolicy />,
   },
   {
     path: "terms-of-service",
-    element:<TermsOfService/>,
-  }
+    element: <TermsOfService />,
+  },
+  {
+    path: "payment-success",
+    element: <PaymentSuccess />,
+  },
+  {
+    path: "payment-fail",
+    element: <PaymentFail />,
+  },
 ]);
 
 export default router;

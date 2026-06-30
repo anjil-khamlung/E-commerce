@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { FaStar } from "react-icons/fa";
 import { FaRegStar } from "react-icons/fa";
+import { API_CONFIG } from "../services/config";
 
 const ProductDetails = () => {
   const { id } = useParams(); // get product id from URL
   const [product, setProduct] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
+ 
     axios
-      .get(`https://dummyjson.com/products/${id}`)
+      .get(`${API_CONFIG.DUMMY_JSON_URL}/products/${id}`)
       .then((res) => setProduct(res.data));
   }, [id]);
 
@@ -19,6 +22,7 @@ const ProductDetails = () => {
     return <h2 className="text-center mt-10">Loading...</h2>;
     }
     
+  //add product to cart
    const addToCart = async (product) => {
      const token = localStorage.getItem("token");
 
@@ -29,7 +33,7 @@ const ProductDetails = () => {
 
      try {
        await axios.post(
-         "http://localhost:5000/api/cart/add",
+         `${API_CONFIG.BACKEND_URL}/api/cart/add`,
          {
            id: product.id,
            title: product.title,
@@ -55,13 +59,13 @@ const ProductDetails = () => {
 
   return (
     <div className="container mx-auto px-6 py-10">
-      <div className="grid md:grid-cols-2 gap-10">
+      <div className="grid md:grid-cols-2 gap-10 items-center">
         {/* Product Image */}
         <div className="flex justify-center">
           <img
             src={product.thumbnail}
             alt={product.title}
-            className="w-80 object-contain"
+            className="w-full max-w-md h-96 object-contain"
           />
         </div>
 
@@ -75,7 +79,9 @@ const ProductDetails = () => {
             {Array.from({ length: 5 }, (_, i) => {
               const starValue = i + 1;
               return (
-                <span key={i}>{product.rating >= starValue ? <FaStar/> : <FaRegStar/>}</span>
+                <span key={i}>
+                  {product.rating >= starValue ? <FaStar /> : <FaRegStar />}
+                </span>
               );
             })}
             <span className="ml-2 text-gray-600 font-semibold">
@@ -94,6 +100,13 @@ const ProductDetails = () => {
             className="mt-6 bg-green-500 text-white px-6 py-3 rounded-md cursor-pointer hover:bg-green-600"
           >
             Add to Cart
+          </button>
+
+          <button
+            onClick={() => navigate(-1)}
+            className="block mt-3 text-green-500 px-6 py-2 cursor-pointer hover:text-green-600"
+          >
+            ← Go Back
           </button>
         </div>
       </div>

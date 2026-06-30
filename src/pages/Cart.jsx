@@ -1,92 +1,92 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import { payWithEsewa } from "../utils/payWithEsewa";
+import {API_CONFIG} from "../services/config";
 
 const Cart = () => {
   const navigate = useNavigate();
   const [cart, setCart] = useState([]);
 
+  useEffect(() => {
+    fetchCart();
+  }, []);
 
+  const fetchCart = async () => {
+    try {
+      const token = localStorage.getItem("token");
 
-useEffect(() => {
-  fetchCart();
-}, []);
+      const res =  await axios.get(`${API_CONFIG.BACKEND_URL}/api/cart`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-const fetchCart = async () => {
-  try {
-    const token = localStorage.getItem("token");
-
-    const res = await axios.get("http://localhost:5000/api/cart", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    setCart(res.data);
-  } catch (error) {
-    console.error(error);
-  }
-};
+      setCart(res.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   // Remove item from cart
-const removeItem = async (id) => {
-  try {
-    const token = localStorage.getItem("token");
+  const removeItem = async (id) => {
+    try {
+      const token = localStorage.getItem("token");
 
-    await axios.delete(`http://localhost:5000/api/cart/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+      await axios.delete(`${API_CONFIG.BACKEND_URL}/api/cart/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-    fetchCart();
-  } catch (error) {
-    console.error(error);
-  }
-};
+      fetchCart();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   // Clear entire cart
- const clearCart = async () => {
-   try {
-     const token = localStorage.getItem("token");
+  const clearCart = async () => {
+    try {
+      const token = localStorage.getItem("token");
 
-     await axios.delete("http://localhost:5000/api/cart", {
-       headers: {
-         Authorization: `Bearer ${token}`,
-       },
-     });
+      await axios.delete(`${API_CONFIG.BACKEND_URL}/api/cart`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-     setCart([]);
-   } catch (error) {
-     console.error(error);
-   }
- };
+      setCart([]);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   // Update quantity of a cart item
- const updateQuantity = async (id, delta) => {
-   try {
-     const token = localStorage.getItem("token");
+  const updateQuantity = async (id, delta) => {
+    try {
+      const token = localStorage.getItem("token");
 
-     await axios.put(
-       "http://localhost:5000/api/cart/update",
-       {
-         productId: id,
-         delta,
-       },
-       {
-         headers: {
-           Authorization: `Bearer ${token}`,
-         },
-       },
-     );
+      await axios.put(
+        `${API_CONFIG.BACKEND_URL}/api/cart/update`,
+        {
+          productId: id,
+          delta,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
 
-     fetchCart();
-   } catch (error) {
-     console.error(error);
-   }
- };
+      fetchCart();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
+  //total price
   const subtotal = cart.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0,
@@ -207,10 +207,13 @@ const removeItem = async (id) => {
             </div>
 
             <button
-              onClick={() => navigate("/checkout")}
-              className="w-full bg-green-500 text-white py-3 rounded-lg font-semibold cursor-pointer hover:bg-green-600 transition-colors mb-3"
+              onClick={() => {
+              
+                payWithEsewa(total);
+              }}
+              className="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors cursor-pointer"
             >
-              Proceed to Checkout
+              Pay with eSewa
             </button>
           </div>
         </div>
