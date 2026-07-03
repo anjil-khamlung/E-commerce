@@ -1,14 +1,12 @@
 import React, { useContext } from "react";
 import CategoryCard from "./CategoryCard";
 import SmallGrid from "./SmallGrid";
-import {GlobalContext} from "../context/GlobalContext";
+import { GlobalContext } from "../context/GlobalContext";
+
 
 const CategorySection = () => {
 const { categories, loading, error } = useContext(GlobalContext);
 
-if (loading) {
-  return <p className="text-center">Loading categories...</p>;
-}
 
 if (error) {
   return (
