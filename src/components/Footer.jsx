@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/logo.png";
 import { FaFacebook, FaInstagram, FaTwitter, FaGithub } from "react-icons/fa";
+import { FaArrowUp } from "react-icons/fa6";
 
 const Footer = () => {
   return (
@@ -72,7 +73,7 @@ const Footer = () => {
             </Link>
 
             <Link to="/login" className="hover:text-white transition">
-              Login
+              Sign In
             </Link>
           </div>
         </div>
@@ -144,9 +145,9 @@ const Footer = () => {
                   behavior: "smooth",
                 })
               }
-              className="  text-green-500 px-3 py-1  cursor-pointer"
+              className=" flex items-center gap-1 text-green-500 px-3 py-1  cursor-pointer"
             >
-              ↑ Back to Top
+              <FaArrowUp /> <span> Back to Top</span>
             </button>
           </div>
         </div>

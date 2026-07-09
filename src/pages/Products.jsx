@@ -5,17 +5,9 @@ import { FaStar } from "react-icons/fa";
 import { FaRegStar } from "react-icons/fa";
 import { API_CONFIG } from "../services/config";
 import Fuse from "fuse.js";
+import ProductCardSkeleton from "../components/skeletons/ProductCardSkeleton";
 
-// Skeleton loader for product cards
-const ProductCardSkeleton = () => (
-  <div className="bg-white shadow-md rounded-xl p-4 animate-pulse">
-    <div className="h-48 bg-gray-200 rounded-lg mb-3"></div>
-    <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-    <div className="h-3 bg-gray-200 rounded w-1/2 mb-2"></div>
-    <div className="h-4 bg-gray-200 rounded w-1/4 mb-2"></div>
-    <div className="h-3 bg-gray-200 rounded w-1/5"></div>
-  </div>
-);
+
 
 const Products = () => {
   const navigate = useNavigate();
@@ -65,16 +57,7 @@ useEffect(() => {
   
   // Loading skeleton
   if (loading) {
-    return (
-      <div className="container mx-auto px-4 py-6">
-        <h2 className="text-lg font-semibold mb-4 flex items-center justify-center animate-pulse bg-gray-200 h-6 w-48 rounded"></h2>
-        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mt-4">
-          {Array.from({ length: 8 }).map((_, idx) => (
-            <ProductCardSkeleton key={idx} />
-          ))}
-        </div>
-      </div>
-    );
+   return <ProductCardSkeleton/>
   }
 
   // Error message

@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { payWithEsewa } from "../utils/payWithEsewa";
 import {API_CONFIG} from "../services/config";
+import { IoIosArrowRoundBack } from "react-icons/io";
+
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -100,9 +102,10 @@ const Cart = () => {
         <h2 className="text-xl font-semibold">Your cart is empty</h2>
         <button
           onClick={() => navigate("/")}
-          className="mt-4 bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600 cursor-pointer"
+          className="mt-4 flex items-center  bg-green-500 text-white px-3 py-2 rounded hover:bg-green-600 cursor-pointer mx-auto"
         >
-          Continue Shopping
+          <IoIosArrowRoundBack className="text-3xl" />
+          <span> Continue Shopping </span>
         </button>
       </div>
     );
@@ -158,9 +161,10 @@ const Cart = () => {
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mt-4">
             <button
               onClick={() => navigate("/")}
-              className=" text-green-500 px-6 py-2 cursor-pointer hover:text-green-600 "
+              className="flex items-center gap-1 text-green-500 px-6 py-2 cursor-pointer hover:text-green-600 "
             >
-              ← Continue Shopping
+              <IoIosArrowRoundBack className="text-3xl" />
+              <span> Continue Shopping </span>
             </button>
             <button
               onClick={clearCart}
@@ -208,7 +212,6 @@ const Cart = () => {
 
             <button
               onClick={() => {
-              
                 payWithEsewa(total);
               }}
               className="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors cursor-pointer"

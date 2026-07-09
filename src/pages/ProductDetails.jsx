@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { FaStar } from "react-icons/fa";
 import { FaRegStar } from "react-icons/fa";
 import { API_CONFIG } from "../services/config";
+import ProductDetailSkeleton from "../components/skeletons/ProductsDetailSkeleton";
+import { IoIosArrowRoundBack } from "react-icons/io";
 
 const ProductDetails = () => {
   const { id } = useParams(); // get product id from URL
@@ -18,8 +20,8 @@ const ProductDetails = () => {
       .then((res) => setProduct(res.data));
   }, [id]);
 
-  if (!product) {
-    return <h2 className="text-center mt-10">Loading...</h2>;
+  if ( !product) {
+    return <ProductDetailSkeleton/>
     }
     
   //add product to cart
@@ -104,9 +106,10 @@ const ProductDetails = () => {
 
           <button
             onClick={() => navigate(-1)}
-            className="block mt-3 text-green-500 px-6 py-2 cursor-pointer hover:text-green-600"
+            className="mt-3 flex items-center gap-1 text-green-500 px-4 py-2 cursor-pointer hover:text-green-600"
           >
-            ← Go Back
+            <IoIosArrowRoundBack className="text-3xl" />
+            <span>Go Back</span>
           </button>
         </div>
       </div>

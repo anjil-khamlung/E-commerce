@@ -4,6 +4,8 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import {  toast } from "react-toastify";
 import { API_CONFIG } from "../services/config";
 import logo from "../assets/logo.png";
+import { IoIosArrowRoundBack } from "react-icons/io";
+
 
 const Login = () => {
   const navigate = useNavigate();
@@ -116,22 +118,26 @@ const Login = () => {
           </div>
 
           {/* Password */}
-          <div className="relative">
+          <div>
             <label className="font-semibold">Password</label>
-            <input
-              type={showPassword ? "text" : "password"}
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              className="w-full border rounded p-2 mt-1"
-              placeholder="Enter your password"
-            />
-            <span
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-9 cursor-pointer"
-            >
-              {showPassword ? "🙈" : "🐵"}
-            </span>
+
+            <div className="relative mt-1">
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                className="w-full border p-2 pr-12 rounded"
+                placeholder="Example: Abc@1234"
+              />
+
+              <span
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-2xl"
+              >
+                {showPassword ? "🙈" : "🐵"}
+              </span>
+            </div>
 
             {errors.password && (
               <p className="text-red-500 text-sm">{errors.password}</p>
@@ -147,9 +153,10 @@ const Login = () => {
 
           <Link
             to="/"
-            className="text-center text-green-600 hover:text-green-700"
+            className="flex items-center mx-auto text-center text-green-600 hover:text-green-700"
           >
-            ← Back to Home
+            <IoIosArrowRoundBack className="text-3xl" />
+            <span> Back to Home</span>
           </Link>
 
           <p className="text-center text-gray-600 text-sm sm:text-base">
